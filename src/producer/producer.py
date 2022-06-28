@@ -126,6 +126,7 @@ while True:
         end = time.time()
         producer.flush()
         print(value)
+        print((end - start))
         time.sleep(60-(end - start))
     except:
         end = time.time()

@@ -42,20 +42,19 @@ services:
   producer:
     build:
       context: .
-      dockerfile: producer/Dockerfile
+      dockerfile: src/producer/Dockerfile
     depends_on:
       - kafka
     environment:
-      SCRIPT: producer/producer.py
-      DATA: data/test.csv
+      SCRIPT: src/producer/producer.py
       KAFKA_HOST: kafka:9092
-      KAFKA_TOPIC: crypto
+      KAFKA_TOPIC: btc
       KAFKA_INTERVAL: 0.5
 
   consumer:
     build: 
       context: .
-      dockerfile: consumer/Dockerfile
+      dockerfile: src/consumer/Dockerfile
     ports:
       - "4040:4040"
     depends_on: 
@@ -64,14 +63,17 @@ services:
       - producer
       - filler
     environment:
-      SCRIPT: consumer/consumer.py
+      SCRIPT: src/consumer/consumer.py
       KAFKA_HOST: kafka:9092
-      KAFKA_TOPIC: crypto
-      KAFKA_CONSUMER_GROUP: btc_consumer
+      KAFKA_TOPIC: btc
+      KAFKA_CONSUMER_GROUP: consumer
 
   filler:
     build: 
       context: .
-      dockerfile: filler/Dockerfile
+      dockerfile: src/filler/Dockerfile
     environment:
-      SCRIPT: filler/filler.py
+      SCRIPT: src/filler/filler.py
+      TZ: Europe/Amsterdam
+    volumes:
+    - /etc/localtime:/etc/localtime

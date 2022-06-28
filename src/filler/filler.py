@@ -5,6 +5,7 @@ import pandas
 import time
 import requests
 from typing import *
+import pytz
 
 hostname = "bigdatapostgres-federicozilli-bf3a.aivencloud.com"
 database = "CRYPTODB"
@@ -17,8 +18,6 @@ cur = conn.cursor()
 last = cur.execute('SELECT * FROM BTC ORDER BY id DESC LIMIT 1')
 results = cur.fetchall()
 last_entry = datetime.datetime.combine(results[0][0], results[0][1]).timestamp()
-
-print(last_entry)
 
 class BinanceClient:
     def __init__(self, futures=False):
@@ -103,8 +102,6 @@ def GetHistoricalData(client, symbol, start_time, end_time, limit=1500):
     collection = []
 
     while start_time <= end_time:
-        print(ms_to_dt_local(start_time))
-        print(ms_to_dt_local(end_time))
         data = client.get_historical_data(symbol, start_time=start_time, end_time=end_time, limit=limit)
         print(client.exchange + " " + symbol + " : Collected " + str(len(data)) + " missing data from "+ str(ms_to_dt_local(data[0][0])) +" to " + str(ms_to_dt_local(data[-1][0])))
         start_time = int(data[-1][0] + 60000)
@@ -117,7 +114,9 @@ client = BinanceClient(futures=False)
 symbol = "BTCUSDT"
 interval = "1m"
 fromDate = (int(last_entry) * 1000) + 60000
-toDate = int(datetime.datetime.now().timestamp())*1000
+toDate = int((datetime.datetime.now(pytz.timezone('Europe/Amsterdam')).timestamp())*1000)
+
+print(toDate)
 
 data = GetHistoricalData(client, symbol, fromDate, toDate)
 df = GetDataFrame(data)
