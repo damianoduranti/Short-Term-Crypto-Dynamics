@@ -75,9 +75,6 @@ services:
       context: .
       dockerfile: src/dashboard/Dockerfile
     depends_on: 
-      - zookeeper
-      - kafka
-      - producer
       - consumer
     environment:
       SCRIPT: src/dashboard/dashboard.py
