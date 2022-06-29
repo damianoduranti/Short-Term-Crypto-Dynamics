@@ -61,19 +61,23 @@ services:
       - zookeeper
       - kafka
       - producer
-      - filler
     environment:
       SCRIPT: src/consumer/consumer.py
       KAFKA_HOST: kafka:9092
       KAFKA_TOPIC: btc
       KAFKA_CONSUMER_GROUP: consumer
-
-  filler:
-    build: 
-      context: .
-      dockerfile: src/filler/Dockerfile
-    environment:
-      SCRIPT: src/filler/filler.py
       TZ: Europe/Amsterdam
     volumes:
     - /etc/localtime:/etc/localtime
+
+  dashboard:
+    build: 
+      context: .
+      dockerfile: src/dashboard/Dockerfile
+    depends_on: 
+      - zookeeper
+      - kafka
+      - producer
+      - consumer
+    environment:
+      SCRIPT: src/dashboard/dashboard.py
