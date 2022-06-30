@@ -42,11 +42,11 @@ services:
   producer:
     build:
       context: .
-      dockerfile: src/producer/Dockerfile
+      dockerfile: Dockerfile
     depends_on:
       - kafka
     environment:
-      SCRIPT: src/producer/producer.py
+      SCRIPT: src/producer.py
       KAFKA_HOST: kafka:9092
       KAFKA_TOPIC: btc
       KAFKA_INTERVAL: 0.5
@@ -54,7 +54,7 @@ services:
   consumer:
     build: 
       context: .
-      dockerfile: src/consumer/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "4040:4040"
     depends_on: 
@@ -62,19 +62,23 @@ services:
       - kafka
       - producer
     environment:
-      SCRIPT: src/consumer/consumer.py
+      SCRIPT: src/consumer.py
       KAFKA_HOST: kafka:9092
       KAFKA_TOPIC: btc
       KAFKA_CONSUMER_GROUP: consumer
       TZ: Europe/Amsterdam
     volumes:
-    - /etc/localtime:/etc/localtime
+      - /etc/localtime:/etc/localtime
 
   dashboard:
     build: 
       context: .
       dockerfile: src/dashboard/Dockerfile
+    volumes:
+      - /src/dashboard
     depends_on: 
       - consumer
     environment:
       SCRIPT: src/dashboard/dashboard.py
+    ports:
+      - 8501:8501

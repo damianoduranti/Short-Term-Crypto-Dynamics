@@ -9,6 +9,15 @@ import time
 import plotly.graph_objects as go
 from sklearn.linear_model import LinearRegression
 
+# Initializing Website ----------------------------------------------------------------------------------------------
+st.set_page_config(
+    page_title = 'Real-Time Crypto Dashboard',
+    page_icon = '📈',
+    layout = 'wide'
+)
+
+st.title("Crypto asset short-term dynamics")
+
 #Auxiliary functions -----------------------------------------------------------------------------------------------------------
 class Coin_at_time:
 
@@ -65,6 +74,12 @@ class list_max_len:
             self._list.pop(0)
             self._list.append(newel)
 
+coins_df  = {"coins" :  ["BTC" ,"ETH"]}
+coins_df = pd.DataFrame(coins_df)
+chosen_coin = st.selectbox("Select the coin", pd.unique(coins_df["coins"]))
+
+placeholder = st.empty()
+
 # Credentials for the DB ----------------------------------------------------------------------------------------------
 
 hostname = "bigdatapostgres-federicozilli-bf3a.aivencloud.com"
@@ -76,21 +91,6 @@ port_id = 18580
 conn = psycopg2.connect(host = hostname, dbname=database, user= username, password=pswrd , port = port_id)
 
 cur = conn.cursor()
-
-# Initializing Website ----------------------------------------------------------------------------------------------
-st.set_page_config(
-    page_title = 'Real-Time Crypto Dashboard',
-    page_icon = '📈',
-    layout = 'wide'
-)
-
-st.title("Crypto asset short-term dynamics")
-
-coins_df  = {"coins" :  ["BTC" ,"ETH"]}
-coins_df = pd.DataFrame(coins_df)
-chosen_coin = st.selectbox("Select the coin", pd.unique(coins_df["coins"]))
-
-placeholder = st.empty()
 
 # Functions for model retrieval and prediction ----------------------------------------------------------------------------------
 def my_model(coin):
@@ -210,11 +210,3 @@ for i in range(2000):
         st.write(fig)
 
     time.sleep(60)
-
-"""
-NOTE:
-Funziona tutto, ma se ci sono salti maggiori di un minuto fra osservazione ed osservazione il plot si incasina, potremmo risolvere
-mettendo le sull'asse delle x dei valori fissati invece che l'ora che cambia ogni volta
-
-
-"""
