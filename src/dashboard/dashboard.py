@@ -191,7 +191,7 @@ for i in range(2000):
 
         kpi3, kpi4 = st.columns(2)
         kpi3.metric(label = "Our Advice is to:", value = "%s" %adv )
-        kpi4.metric(label = " ", value =  chosen_coin + " will go %s" %desc + " in a minute" )
+        kpi4.metric(label = " ", value =  chosen_coin + " will go %s in a minute" %desc )
 
         # create two columns for charts 
         # fig_col1,fig_col2 = st.columns(2)
