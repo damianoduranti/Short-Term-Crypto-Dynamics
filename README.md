@@ -35,7 +35,7 @@ git clone https://github.com/damianoduranti/BDT-Project.git
 
 Move to the folder and run:
 ```
-docker-compose up --build 
+docker-compose up
 ```
     
 
