@@ -82,3 +82,14 @@ services:
       SCRIPT: src/dashboard/dashboard.py
     ports:
       - 8501:8501
+    
+ model_fit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka
+      - consumer
+      - producer
+    environment:
+      SCRIPT: src/model_fit.py
