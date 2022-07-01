@@ -68,7 +68,7 @@ while True:
             number += 1
 
         msubj = subj/number
-        mpol = polarity
+        mpol = polarity/number
         print(coin)
         print(msubj)
         print(mpol)
