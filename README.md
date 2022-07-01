@@ -65,3 +65,4 @@ Some points of the pipeline can be accessed at the following addresses:
 ## Notes
 - When the data producer has been inactive for some time, the app has the capabilities to recover the missing data and fill the dataset to have a complete history. This may need some time at the first run to correctly display the plots and the predictions.
 - During execution, you may encounter some issues related to the connection to Postgres services. These problems may be due to your connection limitations.
+- The coins analyzed are chosen in the docker-compose.yml as an envirorment variable for each of the different containers. The string is editable. However, the system is not meant to change the displayed coins very often, as this will need additional time to recover past data for these.
