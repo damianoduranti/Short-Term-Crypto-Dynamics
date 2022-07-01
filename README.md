@@ -63,4 +63,5 @@ Some points of the pipeline can be accessed at the following addresses:
 ```
 
 ## Notes
-During execution, you may encounter some issues related to the connection to Postgres services. These problems may be due to your connection limitations.
+- When the data producer has been inactive for some time, the app has the capabilities to recover the missing data and fill the dataset to have a complete history. This may need some time at the first run to correctly display the plots and the predictions.
+- During execution, you may encounter some issues related to the connection to Postgres services. These problems may be due to your connection limitations.
