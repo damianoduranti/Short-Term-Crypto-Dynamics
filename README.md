@@ -54,10 +54,14 @@ Some points of the pipeline can be accessed at the following addresses:
 │   ├── producer.py
 │   ├── model_fit.py
 │   ├── requirements.txt
-│   └── dashboard
-│   	  ├── dashboard.py
-│   	  └── Dockerfile
-│ 
+│   ├── dashboard
+│   │	  ├── dashboard.py
+│   │     └── Dockerfile
+│   └── sentiment
+│    	  ├── sentiment.py
+│         └── Dockerfile
+├── data
+│   └── symbols.json
 ├── docker-compose.yml
 └── Dockerfile
 ```
