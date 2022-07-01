@@ -93,7 +93,7 @@ while True:
         # y = y[-7200:]
         # x = x[-7200:] 
 
-        lin_reg = LinearRegression(normalize=True)
+        lin_reg = LinearRegression() # normalize=True
 
         lin_reg.fit(x,y)
 
