@@ -72,7 +72,7 @@ conn = psycopg2.connect(host = hostname, dbname=database, user= username, passwo
 
 cur = conn.cursor()
 
-coins_list = "BTCUSDT,ETHUSDT,LTCUSDT".split(",")
+coins_list = os.environ["COINS"].split(",")
 
 while True:
     # selecting all the data from the table
@@ -103,7 +103,7 @@ while True:
         to_insert = "INSERT INTO "+coin+"_coef VALUES ("+ str(intercept) +", ARRAY %s )" %str(list(coefficients))
 
         try:
-            cur.execute("SELECT 1 FROM btcusdt_coef LIMIT 1;")
+            cur.execute("SELECT 1 FROM "+coin+"_coef LIMIT 1;")
         except:
             cur.execute("CREATE TABLE "+coin+"_coef ( intercept numeric, coefficients numeric ARRAY, id SERIAL PRIMARY KEY)")
             conn.commit()
