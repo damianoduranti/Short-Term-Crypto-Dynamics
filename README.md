@@ -61,3 +61,6 @@ Some points of the pipeline can be accessed at the following addresses:
 ├── docker-compose.yml
 └── Dockerfile
 ```
+
+## Notes
+During execution, you may encounter some issues related to the connection to Postgres services. These problems may be due to your connection limitations.
