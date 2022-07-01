@@ -96,3 +96,18 @@ services:
     environment:
       COINS: "BTCUSDT,ETHUSDT,LTCUSDT"
       SCRIPT: src/model_fit.py
+
+  sentiment:
+    build:
+      context: .
+      dockerfile: src/sentiment/Dockerfile
+    depends_on:
+      - kafka
+      - consumer
+      - producer
+      - dashboard
+    environment:
+      COINS: "BTCUSDT,ETHUSDT,LTCUSDT"
+      KAFKA_HOST: kafka:9092
+      SCRIPT: src/sentiment/sentiment.py
+      env_file: .env

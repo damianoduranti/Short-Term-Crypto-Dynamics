@@ -1,0 +1,106 @@
+[
+    {
+        "name": "Bitcoin",
+        "symbol": "BTC"
+    },
+    {
+        "name": "Ethereum",
+        "symbol": "ETH"
+    },
+    {
+        "name": "Tether",
+        "symbol": "USDT"
+    },
+    {
+        "name": "Cardano",
+        "symbol": "ADA"
+    },
+    {
+        "name": "XRP",
+        "symbol": "XRP"
+    },
+    {
+        "name": "Solana",
+        "symbol": "SOL"
+    },
+    {
+        "name": "Polkadot",
+        "symbol": "DOT"
+    },
+    {
+        "name": "Dogecoin",
+        "symbol": "DOGE"
+    },
+    {
+        "name": "Dai",
+        "symbol": "DAI"
+    },
+    {
+        "name": "Litecoin",
+        "symbol": "LTC"
+    },
+    {
+        "name": "Algorand",
+        "symbol": "ALGO"
+    },
+    {
+        "name": "Bitcoin Cash",
+        "symbol": "BCH"
+    },
+    {
+        "name": "ECOMI",
+        "symbol": "OMI"
+    },
+    {
+        "name": "Internet Computer",
+        "symbol": "ICP"
+    },
+    {
+        "name": "Ethereum Classic",
+        "symbol": "ETC"
+    },
+    {
+        "name": "Monero",
+        "symbol": "XMR"
+    },
+    {
+        "name": "Tezos",
+        "symbol": "XTZ"
+    },
+    {
+        "name": "Iota",
+        "symbol": "MIOTA"
+    },
+    {
+        "name": "EOS",
+        "symbol": "EOS"
+    },
+    {
+        "name": "Bitcoin SV",
+        "symbol": "BSV"
+    },
+    {
+        "name": "Maker",
+        "symbol": "MKR"
+    },
+    {
+        "name": "Zcash",
+        "symbol": "ZEC"
+    },
+    {
+        "name": "Dash",
+        "symbol": "DASH"
+    },
+    {
+        "name": "Nano",
+        "symbol": "XNO"
+    },
+    {
+        "name": "Augur",
+        "symbol": "REP"
+    },
+    {
+        "name": "Steem",
+        "symbol": "STEEM"
+    }
+]

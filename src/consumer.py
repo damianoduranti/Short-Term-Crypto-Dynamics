@@ -116,7 +116,7 @@ cur = conn.cursor()
 client = BinanceClient(futures=False)
 interval = "1m"
 
-symbols =os.environ["COINS"].split(",")
+symbols = os.environ["COINS"].split(",")
 
 for symbol in symbols:
     try:
@@ -161,6 +161,7 @@ consumer = KafkaConsumer(group_id=os.environ["KAFKA_CONSUMER_GROUP"],
                         enable_auto_commit=True
                         )
 
+symbols.append('Sentiment')
 consumer.subscribe(symbols)
 
 #connection and save the incoming entry
@@ -168,11 +169,17 @@ consumer.subscribe(symbols)
 for message in consumer:
     try:
         cur = conn.cursor()
-        print(message.value['date']+" "+message.value['time']+" "+message.topic)
-        cur.execute(
-            "INSERT INTO "+message.topic+" VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (message.value['date'],message.value['time'],message.value['open'],message.value['high'],message.value['low'],message.value['close'],message.value['volume'])
-        )
+        print(message)
+        if message.topic=="Sentiment":
+            cur.execute(
+                "INSERT INTO Sentiment VALUES (%s, %s, %s)",
+                (str(message.value['coin']),message.value['msubj'],message.value['mpol'])
+            )
+        else:
+            cur.execute(
+                "INSERT INTO "+message.topic+" VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (message.value['date'],message.value['time'],message.value['open'],message.value['high'],message.value['low'],message.value['close'],message.value['volume'])
+            )
         conn.commit()
     except: continue
     
