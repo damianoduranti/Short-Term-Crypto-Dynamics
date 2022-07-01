@@ -199,15 +199,15 @@ while True:
 
         # fill in those three columns with respective metrics or KPIs 
         kpi1.metric(label= chosen_coin + " opening price", value=my_coin._open) #  * np.random.choice([0.99,1,1.01])
-        kpi2.metric(label= chosen_coin + " predicted closing price", value= predicted[0])
+        kpi2.metric(label= chosen_coin + " predicted closing price", value= round(predicted[0], 2))
 
         kpi3, kpi4 = st.columns(2)
         kpi3.metric(label = "Our Advice is to:", value = "%s" %adv )
         kpi4.metric(label = " ", value =  chosen_coin + " will go %s in a minute" %desc )
 
         kpi5, kpi6 = st.columns(2)
-        kpi5.metric(label = "The public opinion about " + chosen_coin + " is:", value = pol_adv + " with a score of: " + str(pol))
-        kpi6.metric(label = "The opinion results from: ", value =  subj_adv +  " with a score of: " + str(subj) )
+        kpi5.metric(label = "The public opinion about " + chosen_coin + " is:", value = pol_adv + " with a score of: " + str(round(pol, 2)))
+        kpi6.metric(label = "The opinion results from: ", value =  subj_adv +  " with a score of: " + str(round(subj, 2)))
 
         # create two columns for charts 
         # fig_col1,fig_col2 = st.columns(2)

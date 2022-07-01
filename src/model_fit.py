@@ -3,7 +3,8 @@ import psycopg2
 from sklearn.linear_model import LinearRegression
 import time
 import os
-import pandas
+
+time.sleep(120)
 
 #Auxiliary functions -----------------------------------------------------------------------------------------------------------
 class Coin_at_time:
@@ -78,7 +79,7 @@ while True:
     # selecting all the data from the table
     for coin in coins_list:
         # cur.execute("SELECT * FROM " + coin)
-        cur.execute("select * from "+coin+" ORDER BY id DESC LIMIT 10080") # last 10080 observations = last 7 days
+        cur.execute("select * from "+coin+" ORDER BY id DESC LIMIT 10000") # last 10080 observations = last 7 days
         all = cur.fetchall()
 
         all = [Coin_creator.Coin_from_DB(el).feature_vector() for el in all]
@@ -93,7 +94,7 @@ while True:
         # y = y[-7200:]
         # x = x[-7200:] 
 
-        lin_reg = LinearRegression(normalize=True)
+        lin_reg = LinearRegression()
 
         lin_reg.fit(x,y)
 
@@ -101,16 +102,12 @@ while True:
         intercept = lin_reg.intercept_
         
         to_insert = "INSERT INTO "+coin+"_coef VALUES ("+ str(intercept) +", ARRAY %s )" %str(list(coefficients))
-
-        try:
-            cur.execute("SELECT 1 FROM "+coin+"_coef LIMIT 1;")
-        except:
-            cur.execute("CREATE TABLE "+coin+"_coef ( intercept numeric, coefficients numeric ARRAY, id SERIAL PRIMARY KEY)")
-            conn.commit()
-        finally:
-            cur.execute(to_insert)
-            conn.commit()
-            print("Inserted coefficients for "+coin)
+        
+        cur.execute("CREATE TABLE IF NOT EXISTS "+coin+"_coef ( intercept numeric, coefficients numeric ARRAY, id SERIAL PRIMARY KEY)")
+        conn.commit()    
+        cur.execute(to_insert)
+        conn.commit()
+        print("Inserted coefficients for "+coin)
 
     time.sleep(3600)
 

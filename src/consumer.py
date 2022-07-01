@@ -119,15 +119,15 @@ interval = "1m"
 symbols = os.environ["COINS"].split(",")
 
 for symbol in symbols:
-    try:
-        cur.execute("SELECT 1 FROM "+symbol+" LIMIT 1;")
-        last = cur.execute('SELECT * FROM '+symbol+' ORDER BY id DESC LIMIT 1')
-        results = cur.fetchall()
+    cur.execute("CREATE TABLE IF NOT EXISTS "+symbol+"( date DATE, hour TIME , open numeric, high numeric, low numeric, close numeric, volume numeric, id SERIAL PRIMARY KEY)")
+    conn.commit()
+    last = cur.execute('SELECT * FROM '+symbol+' ORDER BY id DESC LIMIT 1')
+    results = cur.fetchall()
+    if results:
         last_entry = datetime.datetime.combine(results[0][0], results[0][1]).timestamp()
         fromDate = (int(last_entry) * 1000) + 60000
         print("Missing from "+str(fromDate)+" to "+str(toDate))
-    except:
-        cur.execute("CREATE TABLE "+symbol+"( date DATE, hour TIME , open numeric, high numeric, low numeric, close numeric, volume numeric, id SERIAL PRIMARY KEY)")
+    else:
         fromDate = int((datetime.datetime.now()+datetime.timedelta(hours=-1)).timestamp())*1000
         print("Missing table "+symbol+", filling from "+str(fromDate)+" to "+str(toDate))
 
@@ -169,18 +169,20 @@ consumer.subscribe(symbols)
 for message in consumer:
     try:
         cur = conn.cursor()
-        print(message)
         if message.topic=="Sentiment":
             cur.execute(
                 "INSERT INTO Sentiment VALUES (%s, %s, %s)",
                 (str(message.value['coin']),message.value['msubj'],message.value['mpol'])
             )
+            conn.commit()
+            print(message)
         else:
             cur.execute(
                 "INSERT INTO "+message.topic+" VALUES (%s, %s, %s, %s, %s, %s, %s)",
                 (message.value['date'],message.value['time'],message.value['open'],message.value['high'],message.value['low'],message.value['close'],message.value['volume'])
             )
-        conn.commit()
+            conn.commit()
+            print(message)
     except: continue
     
 conn.close()
