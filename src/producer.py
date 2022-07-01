@@ -97,10 +97,9 @@ def GetHistoricalData(client, symbol, start_time, end_time, limit=1500):
     data = client.get_historical_data(symbol, start_time=start_time, end_time=end_time, limit=limit)
 
     return data
-    
 
+symbols = os.environ["COINS"].split(",")
 client = BinanceClient(futures=False)
-symbol = "BTCUSDT"
 interval = "1m"
 
 # Messages will be serialized as JSON 
@@ -111,21 +110,22 @@ headers = ['date', 'time', 'open', 'high', 'low', 'close', 'volume']
 
 while True:
     try:
-        start = time.time()
-        fromDate = int((datetime.datetime.now() - datetime.timedelta(minutes=2)).timestamp() * 1000)
-        toDate = int(datetime.datetime.now().timestamp() * 1000)
-        data = GetHistoricalData(client, symbol, fromDate, toDate)
-        date1=ms_to_dt_local(data[1][0]).strftime('%Y-%m-%d')
-        time1=(ms_to_dt_local(data[1][0])+datetime.timedelta(hours=2)).strftime('%H:%M:%S')
-        data1=list(data[1])
-        data1.pop(0)
-        data1.insert(0, time1)
-        data1.insert(0, date1)
-        value = {headers[i]: data1[i] for i in range(len(headers))}
-        producer.send(os.environ["KAFKA_TOPIC"], value=value)
-        end = time.time()
-        producer.flush()
-        print(value)
+        for symbol in symbols:
+            start = time.time()
+            fromDate = int((datetime.datetime.now() - datetime.timedelta(minutes=2)).timestamp() * 1000)
+            toDate = int(datetime.datetime.now().timestamp() * 1000)
+            data = GetHistoricalData(client, symbol, fromDate, toDate)
+            date1=ms_to_dt_local(data[1][0]).strftime('%Y-%m-%d')
+            time1=(ms_to_dt_local(data[1][0])+datetime.timedelta(hours=2)).strftime('%H:%M:%S')
+            data1=list(data[1])
+            data1.pop(0)
+            data1.insert(0, time1)
+            data1.insert(0, date1)
+            value = {headers[i]: data1[i] for i in range(len(headers))}
+            producer.send(symbol, value=value)
+            end = time.time()
+            producer.flush()
+            print(value)
         print((end - start))
         time.sleep(60-(end - start))
     except:

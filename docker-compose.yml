@@ -48,8 +48,8 @@ services:
     environment:
       SCRIPT: src/producer.py
       KAFKA_HOST: kafka:9092
-      KAFKA_TOPIC: btc
       KAFKA_INTERVAL: 0.5
+      COINS: "BTCUSDT,ETHUSDT,LTCUSDT"
 
   consumer:
     build: 
@@ -67,6 +67,7 @@ services:
       KAFKA_TOPIC: btc
       KAFKA_CONSUMER_GROUP: consumer
       TZ: Europe/Amsterdam
+      COINS: "BTCUSDT,ETHUSDT,LTCUSDT"
     volumes:
       - /etc/localtime:/etc/localtime
 
@@ -80,16 +81,18 @@ services:
       - consumer
     environment:
       SCRIPT: src/dashboard/dashboard.py
+      COINS: "BTCUSDT,ETHUSDT,LTCUSDT"
     ports:
       - 8501:8501
 
   model_fit:
-      build:
-        context: .
-        dockerfile: Dockerfile
-      depends_on:
-        - kafka
-        - consumer
-        - producer
-      environment:
-        SCRIPT: src/model_fit.py
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka
+      - consumer
+      - producer
+    environment:
+      COINS: "BTCUSDT,ETHUSDT,LTCUSDT"
+      SCRIPT: src/model_fit.py

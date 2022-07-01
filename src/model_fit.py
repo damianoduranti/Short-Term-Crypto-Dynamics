@@ -2,6 +2,8 @@ import pandas as pd
 import psycopg2
 from sklearn.linear_model import LinearRegression
 import time
+import os
+import pandas
 
 #Auxiliary functions -----------------------------------------------------------------------------------------------------------
 class Coin_at_time:
@@ -70,7 +72,7 @@ conn = psycopg2.connect(host = hostname, dbname=database, user= username, passwo
 
 cur = conn.cursor()
 
-coins_list = ["BTC" , "ETH"]
+coins_list = "BTCUSDT,ETHUSDT,LTCUSDT".split(",")
 
 while True:
     # selecting all the data from the table
@@ -97,13 +99,19 @@ while True:
 
         coefficients = lin_reg.coef_
         intercept = lin_reg.intercept_
-
-        to_insert = "INSERT INTO "+coin+"_coef VALUES ("+ str(intercept) +", ARRAY %s )" %str(list(coefficients))
-        print(to_insert)
         
-        cur.execute(to_insert)
+        to_insert = "INSERT INTO "+coin+"_coef VALUES ("+ str(intercept) +", ARRAY %s )" %str(list(coefficients))
 
-    conn.commit()
+        try:
+            cur.execute("SELECT 1 FROM btcusdt_coef LIMIT 1;")
+        except:
+            cur.execute("CREATE TABLE "+coin+"_coef ( intercept numeric, coefficients numeric ARRAY, id SERIAL PRIMARY KEY)")
+            conn.commit()
+        finally:
+            cur.execute(to_insert)
+            conn.commit()
+            print("Inserted coefficients for "+coin)
+
     time.sleep(3600)
 
 

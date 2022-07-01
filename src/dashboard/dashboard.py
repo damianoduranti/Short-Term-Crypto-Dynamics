@@ -8,6 +8,7 @@ from datetime import datetime , timedelta, time
 import time 
 import plotly.graph_objects as go
 from sklearn.linear_model import LinearRegression
+import os
 
 # Initializing Website ----------------------------------------------------------------------------------------------
 st.set_page_config(
@@ -55,9 +56,6 @@ class Coin_creator:
     def Coin_from_DB(raw_data:list):
         return Coin_at_time(raw_data[0],raw_data[1],float(raw_data[2]),float(raw_data[3]),float(raw_data[4]),float(raw_data[5]), float(raw_data[6]))
 
-
-"""List with max len"""
-
 class list_max_len:
 
     def __init__(self, max_len) -> None:
@@ -74,7 +72,7 @@ class list_max_len:
             self._list.pop(0)
             self._list.append(newel)
 
-coins_df  = {"coins" :  ["BTC" ,"ETH"]}
+coins_df  = {"coins" : os.environ["COINS"].split(",")}
 coins_df = pd.DataFrame(coins_df)
 chosen_coin = st.selectbox("Select the coin", pd.unique(coins_df["coins"]))
 
@@ -139,8 +137,7 @@ predicted = last10_preds
 istant_price = istant_price 
 istant_predicted = istant_predicted 
 
-# Simulation of streaming data with a for loop ( we must use a while True in the final version)
-for i in range(2000):
+while True:
         
     # Transformations
     cur.execute("select * from %s ORDER BY id DESC LIMIT 1" %chosen_coin)
