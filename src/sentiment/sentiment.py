@@ -8,11 +8,11 @@ import psycopg2
 from kafka import KafkaProducer
 import json
 
-api_key = "###################################"
-api_secret = "###################################"
-bearer_token = "###################################"
-access_token = "###################################"
-access_token_secret = "###################################"
+api_key = "#####"
+api_secret = "#####"
+bearer_token = "#####"
+access_token = "#####"
+access_token_secret = "#####"
 auth = tweepy.OAuthHandler( api_key,api_secret )
 auth.set_access_token(access_token, access_token_secret )
 api = tweepy.API(auth, wait_on_rate_limit=True) #N.B. I omitted the " wait_on_rate_limit_notify = True " setting

@@ -75,7 +75,6 @@ class list_max_len:
 coins_df  = {"coins" : os.environ["COINS"].split(",")}
 coins_df = pd.DataFrame(coins_df)
 chosen_coin = st.selectbox("Select the coin", pd.unique(coins_df["coins"]))
-
 placeholder = st.empty()
 
 # Credentials for the DB ----------------------------------------------------------------------------------------------
@@ -138,7 +137,23 @@ istant_price = istant_price
 istant_predicted = istant_predicted 
 
 while True:
-        
+
+    # Sentiment
+    cur.execute("select * from Sentiment WHERE coin = '%s' ORDER BY id DESC LIMIT 1" %chosen_coin ) #ORDER BY id DESC LIMIT 3
+    sentall = cur.fetchall() 
+    subj , pol = float(sentall[0][1]) , float(sentall[0][2])
+    print(subj , pol)
+
+    if pol > 0:
+        pol_adv = "Positive"
+    else:
+        pol_adv = "Negative"
+
+    if subj > 0.5:
+        subj_adv = "Gut feeling 🤪"
+    else:
+        subj_adv = "Rational reasoning 🤓"
+
     # Transformations
     cur.execute("select * from %s ORDER BY id DESC LIMIT 1" %chosen_coin)
     one = cur.fetchone()    
@@ -189,6 +204,10 @@ while True:
         kpi3, kpi4 = st.columns(2)
         kpi3.metric(label = "Our Advice is to:", value = "%s" %adv )
         kpi4.metric(label = " ", value =  chosen_coin + " will go %s in a minute" %desc )
+
+        kpi5, kpi6 = st.columns(2)
+        kpi5.metric(label = "The public opinion about " + chosen_coin + " is:", value = pol_adv + " with a score of: " + str(pol))
+        kpi6.metric(label = "The opinion results from: ", value =  subj_adv +  " with a score of: " + str(subj) )
 
         # create two columns for charts 
         # fig_col1,fig_col2 = st.columns(2)

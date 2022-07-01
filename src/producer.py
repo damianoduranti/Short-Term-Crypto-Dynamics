@@ -110,8 +110,8 @@ headers = ['date', 'time', 'open', 'high', 'low', 'close', 'volume']
 
 while True:
     try:
+        start = time.time()
         for symbol in symbols:
-            start = time.time()
             fromDate = int((datetime.datetime.now() - datetime.timedelta(minutes=2)).timestamp() * 1000)
             toDate = int(datetime.datetime.now().timestamp() * 1000)
             data = GetHistoricalData(client, symbol, fromDate, toDate)
@@ -127,7 +127,13 @@ while True:
             producer.flush()
             print(value)
         print((end - start))
-        time.sleep(60-(end - start))
+        try:
+            time.sleep(60-(end - start))
+        except:
+            pass
     except:
         end = time.time()
-        time.sleep(60-(end - start))
+        try:
+            time.sleep(60-(end - start))
+        except:
+            pass
