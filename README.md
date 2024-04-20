@@ -1,5 +1,6 @@
-# SHORT TERM CRYPTO DYNAMICS
-## *Project for Big Data Technologies 2022*
+# Short-Term Crypto Dynamics
+## *Project for Big Data Technologies Course 2022*
+## *Master Degree in Data Science at the University of Trento*
 ___
 
 This project has been developed for the Big Data Technologies course of the University of Trento. 
